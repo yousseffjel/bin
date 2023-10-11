@@ -1,7 +1,53 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
-choice=$(echo "Shutdown\nReboot\nExit" | dmenu)
+if [[ "$XDG_SESSION_TYPE" == "wayland" ]]; then
+    sel="fuzzel -d -w 20 -l 6 -p Options:"
+    ans="fuzzel -d -w 20 -l 2 -p Sure?"
+elif [[ "$XDG_SESSION_TYPE" == "x11" ]]; then
+    sel="dmenu -i -p Options:"
+    ans="dmenu -i -p Sure?"
+fi
 
-[ $choice = "Shutdown" ] && doas poweroff
-[ $choice = "Reboot" ] && doas reboot
-[ $choice = "Exit " ] && doas kill Xorg
+actions=(Lock Logout Suspend Reboot Firmware Shutdown)
+
+selected=$(printf '%s\n' "${actions[@]}" | $sel)
+
+if [[ ! -z $selected ]]; then
+    answer="$(echo -e "Yes\nNo" | \
+        $ans)"
+    if [[ $answer == "Yes" ]]; then
+        case $selected in 
+            Suspend) systemctl suspend ;;
+            Logout) sudo killall Xorg ;;
+            Reboot) systemctl reboot ;;
+            Shutdown) shutdown -h now ;;
+            Firmware) systemctl reboot --firmware-setup ;;
+        esac
+    fi
+fi#!/usr/bin/env bash
+
+if [[ "$XDG_SESSION_TYPE" == "wayland" ]]; then
+    sel="fuzzel -d -w 20 -l 6 -p Options:"
+    ans="fuzzel -d -w 20 -l 2 -p Sure?"
+elif [[ "$XDG_SESSION_TYPE" == "x11" ]]; then
+    sel="dmenu -i -p Options:"
+    ans="dmenu -i -p Sure?"
+fi
+
+actions=(Lock Logout Suspend Reboot Firmware Shutdown)
+
+selected=$(printf '%s\n' "${actions[@]}" | $sel)
+
+if [[ ! -z $selected ]]; then
+    answer="$(echo -e "Yes\nNo" | \
+        $ans)"
+    if [[ $answer == "Yes" ]]; then
+        case $selected in 
+            Suspend) systemctl suspend ;;
+            Logout) sudo killall Xorg ;;
+            Reboot) systemctl reboot ;;
+            Shutdown) shutdown -h now ;;
+            Firmware) systemctl reboot --firmware-setup ;;
+        esac
+    fi
+fi
