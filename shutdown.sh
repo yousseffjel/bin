@@ -18,7 +18,7 @@ if [[ ! -z $selected ]]; then
     if [[ $answer == "Yes" ]]; then
         case $selected in 
             Suspend) systemctl suspend ;;
-            Logout) sudo killall Xorg ;;
+            Logout) doas pkill -u yusuf ;;
             Reboot) systemctl reboot ;;
             Shutdown) shutdown -h now ;;
             Firmware) systemctl reboot --firmware-setup ;;
