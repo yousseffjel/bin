@@ -1,7 +1,13 @@
 #!/usr/bin/bash
-img=(`find ~/Antar-dwm/wallpapers/ -name '*' -exec file {} \; | grep -o -P '^.+: \w+ image' | cut -d':' -f1`)
+DIR=~/Antar-dwm/wallpapers
+rec(){
+    for file in "$DIR"/*.jpg; do
+        feh --bg-fill "$file"
+        sleep 300;
+    done
+}
+
 while true
 do
-   feh --bg-scale "${img[$RANDOM % ${#img[@]} ]}"
-sleep 600
+    rec DIR
 done
