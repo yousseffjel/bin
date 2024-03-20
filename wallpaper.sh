@@ -1,5 +1,5 @@
 #!/usr/bin/bash
-DIR=~/Antar-dwm/wallpapers
+DIR=~/src/wallpaper
 rec(){
     for file in "$DIR"/*.jpg; do
         feh --bg-fill "$file"
